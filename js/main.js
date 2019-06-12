@@ -3,24 +3,15 @@
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-// var pin = map.querySelector('map__pin');
-
 var WINDOW_WIDTH = map.offsetWidth;
-var PIN_WIDTH = 50;
-var PIN_HEIGHT = 70;
+var WINDOW_HEIGHT_MAX = 630;
+var WINDOW_HEIGHT_MIN = 130;
 
 var accomodationType = ['palace', 'flat', 'house', 'bungalo'];
 var announcement = [];
 
 var getRandom = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
-};
-
-var getX = function () {
-  return getRandom(PIN_WIDTH / 2, WINDOW_WIDTH - PIN_WIDTH / 2);
-};
-var getY = function () {
-  return getRandom(130 + PIN_HEIGHT, 630 - PIN_HEIGHT);
 };
 
 var getAccomodation = function (types) {
@@ -38,8 +29,12 @@ var arrayFill = function (array, quantity) {
         type: getAccomodation(accomodationType)
       },
       location: {
-        x: getX(),
-        y: getY()
+        x: function (pinWidth) {
+          return getRandom(pinWidth / 2, WINDOW_WIDTH - pinWidth / 2);
+        },
+        y: function (pinHeight) {
+          return getRandom(WINDOW_HEIGHT_MIN + pinHeight, WINDOW_HEIGHT_MAX - pinHeight);
+        }
       }
 
     };
@@ -55,8 +50,8 @@ var renderPin = function (pin) {
   var element = pinTemplate.cloneNode(true);
 
   element.querySelector('img').src = pin.author.avatar;
-  element.style.top = pin.location.y + 'px;';
-  element.style.left = pin.location.x + 'px;';
+  element.style.top = pin.location.y(element.offsetWidth) + 'px';
+  element.style.left = pin.location.x(element.offsetHeight) + 'px';
   element.querySelector('img').alt = pin.offer.type;
 
   return element;
