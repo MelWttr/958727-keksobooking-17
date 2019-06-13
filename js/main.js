@@ -7,7 +7,7 @@ var WINDOW_WIDTH = map.offsetWidth;
 var WINDOW_HEIGHT_MAX = 630;
 var WINDOW_HEIGHT_MIN = 130;
 
-var accomodationType = ['palace', 'flat', 'house', 'bungalo'];
+var accomodationTypes = ['palace', 'flat', 'house', 'bungalo'];
 var announcements = [];
 
 var getRandom = function (min, max) {
@@ -26,7 +26,7 @@ var arrayFill = function (objects, quantity) {
         avatar: avatarSource
       },
       offer: {
-        type: getAccomodation(accomodationType)
+        type: getAccomodation(accomodationTypes)
       },
       location: {
         x: function (pinWidth) {
