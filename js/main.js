@@ -1,7 +1,6 @@
 'use strict';
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 var WINDOW_WIDTH = map.offsetWidth;
 var WINDOW_HEIGHT_MAX = 630;
@@ -57,9 +56,41 @@ var renderPin = function (pin) {
   return element;
 };
 
+// ***********************Задание 2********************************
+
+var toggleElement = function (element, isDisabled) {
+  element.disabled = isDisabled;
+};
+
+var form = document.querySelector('.ad-form');
+var field = form.querySelector('.ad-form-header__input');
+var fieldSets = form.querySelectorAll('.ad-form__element');
+
+var toggleFields = function (isDisabled) {
+  toggleElement(field, isDisabled);
+  for (var i = 0; i < fieldSets.length; i++) {
+    toggleElement(fieldSets[i], isDisabled);
+  }
+};
+
+toggleFields(true);
+
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < announcements.length; i++) {
   fragment.appendChild(renderPin(announcements[i]));
 }
 
-document.querySelector('.map__pins').appendChild(fragment);
+var mainPin = map.querySelector('.map__pin--main');
+
+var extractCoord = function (str) {
+  return parseInt(str.replace('px', ''), 10);
+};
+
+form.querySelector('#address').value = (extractCoord(mainPin.style.left) + mainPin.offsetWidth / 2) + ',' + (extractCoord(mainPin.style.top) + mainPin.offsetHeight / 2);
+
+mainPin.addEventListener('click', function () {
+  toggleFields(false);
+  map.classList.remove('map--faded');
+  form.classList.remove('ad-form--disabled');
+  document.querySelector('.map__pins').appendChild(fragment);
+});
