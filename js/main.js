@@ -103,3 +103,33 @@ mainPin.addEventListener('click', function () {
     renderPin(announcements[i], clone);
   }
 });
+
+// ***************Задание 2.1***************************
+
+// хранит минимальные стоимости за ночь для разных типов жилья
+var minPrices = {
+  'bungalo': '0',
+  'flat': '1000',
+  'house': '5000',
+  'palace': '10000'
+};
+
+var type = document.querySelector('#type');
+var price = document.querySelector('#price');
+// устанавливаем первоначальные значения полей тип и цена за ночь
+price.min = minPrices[type.value];
+// синхронизируем поля тип и цена за ночь
+type.onchange = function () {
+  price.min = minPrices[this.value];
+};
+// устанавливаем первоначальные значения полей дат заезда и выезда
+form.timein.value = form.timeout.value;
+// синхронизируем дату заезда и выезда
+form.onchange = function (evt) {
+  if (evt.target.name === 'timein') {
+    this.timeout.value = evt.target.value;
+  }
+  if (evt.target.name === 'timeout') {
+    this.timein.value = evt.target.value;
+  }
+};
