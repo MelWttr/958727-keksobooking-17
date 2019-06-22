@@ -118,9 +118,11 @@ var type = document.querySelector('#type');
 var price = document.querySelector('#price');
 // устанавливаем первоначальные значения полей тип и цена за ночь
 price.min = minPrices[type.value];
+price.placeholder = minPrices[type.value];
 // синхронизируем поля тип и цена за ночь
 type.onchange = function () {
   price.min = minPrices[this.value];
+  price.placeholder = minPrices[this.value];
 };
 // устанавливаем первоначальные значения полей дат заезда и выезда
 form.timein.value = form.timeout.value;
