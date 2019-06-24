@@ -5,6 +5,7 @@ var map = document.querySelector('.map');
 var WINDOW_WIDTH = map.offsetWidth;
 var WINDOW_HEIGHT_MAX = 630;
 var WINDOW_HEIGHT_MIN = 130;
+var PSEUDO_HEIGHT = 22;
 
 var accomodationTypes = ['palace', 'flat', 'house', 'bungalo'];
 var announcements = []; // сюда буем складывать шаблоны объявлений с данными сгенерированными случайно
@@ -86,9 +87,21 @@ var extractCoord = function (str) {
   return parseInt(str.replace('px', ''), 10);
 };
 
+var getX = function (element, width) {
+  return extractCoord(element.style.left) + width;
+};
+
+var getY = function (element, height) {
+  return extractCoord(element.style.top) + height;
+};
+
+var makeAddressValue = function (x, y) {
+  return x + ',' + y;
+};
+
 var address = form.querySelector('#address');
 // заполняет поле с адресом координатами главного пина
-address.value = (extractCoord(mainPin.style.left) + mainPin.offsetWidth / 2) + ',' + (extractCoord(mainPin.style.top) + mainPin.offsetHeight / 2);
+address.value = makeAddressValue(getX(mainPin, mainPin.offsetWidth / 2), getY(mainPin, mainPin.offsetHeight / 2));
 
 var pins = document.querySelector('.map__pins');
 
@@ -125,8 +138,22 @@ form.onchange = function (evt) {
 };
 
 // ******************Задание 3.1*********************
+var count = true;
 
-mainPin.addEventListener('mouseDown', function (evt) {
+// функция делает страницу активной
+var enablePage = function () {
+  toggleFields(false);
+  map.classList.remove('map--faded');
+  form.classList.remove('ad-form--disabled');
+  for (var i = 0; i < announcements.length; i++) {
+    var clone = pinTemplate.cloneNode(true);
+    pins.appendChild(clone);
+    renderPin(announcements[i], clone);
+  }
+};
+
+// далее описана логика перемещения пина по карте
+mainPin.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
 
   var startCoords = {
@@ -134,11 +161,13 @@ mainPin.addEventListener('mouseDown', function (evt) {
     y: evt.clientY
   };
 
-  var count = 0;
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    count++;
-
+    address.value = makeAddressValue(getX(mainPin, mainPin.offsetWidth / 2), getY(mainPin, mainPin.offsetHeight) + PSEUDO_HEIGHT); // меняем координаты пина на                                                                                                                                     каждый мув
+    if (count) { // если первый мув, приводим страницу в активное состояние
+      enablePage();
+      count = false;
+    }
     var shift = {
       x: startCoords.x - moveEvt.clientX,
       y: startCoords.y - moveEvt.clientY
@@ -149,9 +178,16 @@ mainPin.addEventListener('mouseDown', function (evt) {
       y: moveEvt.clientY
     };
 
-    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+    var pinY = mainPin.offsetTop - shift.y;
+    var pinX = mainPin.offsetLeft - shift.x;
 
+    // задаем границы перемещения пина
+    if (pinY > WINDOW_HEIGHT_MIN && pinY < WINDOW_HEIGHT_MAX) {
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+    }
+    if (pinX > -(mainPin.offsetWidth / 2) && pinX < WINDOW_WIDTH - mainPin.offsetWidth / 2) {
+      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+    }
   };
 
   var onMouseUp = function (upEvt) {
@@ -162,17 +198,6 @@ mainPin.addEventListener('mouseDown', function (evt) {
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
-
-  if (count === 1) {
-    toggleFields(false);
-    map.classList.remove('map--faded');
-    form.classList.remove('ad-form--disabled');
-    for (var i = 0; i < announcements.length; i++) {
-      var clone = pinTemplate.cloneNode(true);
-      pins.appendChild(clone);
-      renderPin(announcements[i], clone);
-    }
-  }
 });
 
 
