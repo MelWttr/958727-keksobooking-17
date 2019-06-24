@@ -181,7 +181,7 @@ mainPin.addEventListener('mousedown', function (evt) {
     var pinY = mainPin.offsetTop - shift.y;
     var pinX = mainPin.offsetLeft - shift.x;
 
-    // задаем границы перемещения пина
+    // задаем границы перемещения пинад по карте
     if (pinY >= (WINDOW_HEIGHT_MIN - (mainPin.offsetHeight + PSEUDO_HEIGHT)) && pinY <= (WINDOW_HEIGHT_MAX - (mainPin.offsetHeight + PSEUDO_HEIGHT))) {
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
     }
