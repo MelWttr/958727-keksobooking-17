@@ -163,7 +163,7 @@ mainPin.addEventListener('mousedown', function (evt) {
 
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    address.value = makeAddressValue(getX(mainPin, mainPin.offsetWidth / 2), getY(mainPin, mainPin.offsetHeight) + PSEUDO_HEIGHT); // меняем координаты пина на                                                                                                                                     каждый мув
+    address.value = makeAddressValue(getX(mainPin, mainPin.offsetWidth / 2), getY(mainPin, mainPin.offsetHeight + PSEUDO_HEIGHT)); // меняем значение в поле                                                                                                                                        адреса на каждый мув
     if (count) { // если первый мув, приводим страницу в активное состояние
       enablePage();
       count = false;
@@ -182,7 +182,7 @@ mainPin.addEventListener('mousedown', function (evt) {
     var pinX = mainPin.offsetLeft - shift.x;
 
     // задаем границы перемещения пина
-    if (pinY > WINDOW_HEIGHT_MIN && pinY < WINDOW_HEIGHT_MAX) {
+    if (pinY >= (WINDOW_HEIGHT_MIN - (mainPin.offsetHeight + PSEUDO_HEIGHT)) && pinY <= (WINDOW_HEIGHT_MAX - (mainPin.offsetHeight + PSEUDO_HEIGHT))) {
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
     }
     if (pinX > -(mainPin.offsetWidth / 2) && pinX < WINDOW_WIDTH - mainPin.offsetWidth / 2) {
