@@ -92,18 +92,6 @@ address.value = (extractCoord(mainPin.style.left) + mainPin.offsetWidth / 2) + '
 
 var pins = document.querySelector('.map__pins');
 
-// слушает главный пин и переводит всю страницу в активное состояние, если кликнули по нему
-mainPin.addEventListener('click', function () {
-  toggleFields(false);
-  map.classList.remove('map--faded');
-  form.classList.remove('ad-form--disabled');
-  for (var i = 0; i < announcements.length; i++) {
-    var clone = pinTemplate.cloneNode(true);
-    pins.appendChild(clone);
-    renderPin(announcements[i], clone);
-  }
-});
-
 // ***************Задание 2.1***************************
 
 // хранит минимальные стоимости за ночь для разных типов жилья
@@ -135,3 +123,56 @@ form.onchange = function (evt) {
     this.timein.value = evt.target.value;
   }
 };
+
+// ******************Задание 3.1*********************
+
+mainPin.addEventListener('mouseDown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var count = 0;
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+    count++;
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+  if (count === 1) {
+    toggleFields(false);
+    map.classList.remove('map--faded');
+    form.classList.remove('ad-form--disabled');
+    for (var i = 0; i < announcements.length; i++) {
+      var clone = pinTemplate.cloneNode(true);
+      pins.appendChild(clone);
+      renderPin(announcements[i], clone);
+    }
+  }
+});
+
+
