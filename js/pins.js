@@ -50,7 +50,7 @@
     window.data.map.classList.remove('map--faded');
     window.formValidation.form.classList.remove('ad-form--disabled');
     for (var i = 0; i < announcements.length; i++) {
-      var clone = pinTemplate.cloneNode(true)
+      var clone = pinTemplate.cloneNode(true);
       pins.appendChild(clone);
       renderPin(announcements[i], clone);
     }
