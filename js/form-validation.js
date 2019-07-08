@@ -37,14 +37,6 @@
     return x + ',' + y;
   };
 
-  window.formValidation = {
-    mainPin: mainPin,
-    address: address,
-    form: form,
-    toggleFields: toggleFields,
-    makeAddressValue: makeAddressValue
-  };
-
   // заполняет поле с адресом координатами главного пина
   address.value = makeAddressValue(window.data.getX(mainPin, mainPin.offsetWidth / 2), window.data.getY(mainPin, mainPin.offsetHeight / 2));
 
@@ -69,6 +61,14 @@
     if (evt.target.name === 'timeout') {
       this.timein.value = evt.target.value;
     }
+  };
+
+  window.formValidation = {
+    mainPin: mainPin,
+    address: address,
+    form: form,
+    toggleFields: toggleFields,
+    makeAddressValue: makeAddressValue
   };
 })();
 

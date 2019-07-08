@@ -28,7 +28,6 @@
             return window.data.getRandom(window.data.WINDOW_HEIGHT_MIN + pinHeight, window.data.WINDOW_HEIGHT_MAX - pinHeight);
           }
         }
-
       };
       objects.push(tempObject);
     }
