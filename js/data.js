@@ -25,6 +25,14 @@
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
+  var closePopup = function (popup) {
+    popup.classList.add('hidden');
+  };
+
+  var refreshPage = function () {
+    window.location.reload();
+  };
+
 
   window.data = {
     map: map,
@@ -34,7 +42,9 @@
     getX: getX,
     getY: getY,
     extractCoord: extractCoord,
-    getRandom: getRandom
+    getRandom: getRandom,
+    closePopup: closePopup,
+    refreshPage: refreshPage
   };
 
 })();
