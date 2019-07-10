@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var PSEUDO_HEIGHT = 22;
-  var count = true;
+  var isFirstMove = true;
 
   // далее описана логика перемещения пина по карте
   window.formValidation.mainPin.addEventListener('mousedown', function (evt) {
@@ -15,9 +15,9 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       window.formValidation.address.value = window.formValidation.makeAddressValue(window.data.getX(window.formValidation.mainPin, window.formValidation.mainPin.offsetWidth / 2), window.data.getY(window.formValidation.mainPin, window.formValidation.mainPin.offsetHeight + PSEUDO_HEIGHT)); // меняем значение в поле адреса на каждый мув
-      if (count) { // если первый мув, приводим страницу в активное состояние
+      if (isFirstMove) { // если первый мув, приводим страницу в активное состояние
         window.enablePage();
-        count = false;
+        isFirstMove = false;
       }
       var shift = {
         x: startCoords.x - moveEvt.clientX,
