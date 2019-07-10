@@ -25,9 +25,11 @@
     pins.appendChild(fragment);
   };
 
-  var errorHandler = function () {
+  var errorHandler = function (message) {
     var error = document.querySelector('#error').content;
     var errorBtn = error.querySelector('.error__button');
+    var errorMsg = error.querySelector('.error__message');
+    errorMsg.textContent = message;
     main.appendChild(error);
     errorBtn.addEventListener('click', function () {
       window.data.refreshPage();
@@ -38,7 +40,7 @@
     window.formValidation.toggleFields(false);
     window.data.map.classList.remove('map--faded');
     window.formValidation.form.classList.remove('ad-form--disabled');
-    this.window.download(successHandler, errorHandler);
+    window.download(successHandler, errorHandler);
   };
 
 })();
