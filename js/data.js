@@ -5,6 +5,7 @@
   var WINDOW_WIDTH = map.offsetWidth;
   var WINDOW_HEIGHT_MAX = 630;
   var WINDOW_HEIGHT_MIN = 130;
+  var ESC = 27;
 
   // парсит в число из строки координату абсолютно спозиционированного элемента
   var extractCoord = function (str) {
@@ -35,6 +36,7 @@
 
 
   window.data = {
+    ESC: ESC,
     map: map,
     WINDOW_WIDTH: WINDOW_WIDTH,
     WINDOW_HEIGHT_MIN: WINDOW_HEIGHT_MIN,
