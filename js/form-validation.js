@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   // хранит минимальные стоимости за ночь для разных типов жилья
-  var MIN_PRICES = {
+  var MinPrices = {
     'bungalo': '0',
     'flat': '1000',
     'house': '5000',
@@ -41,13 +41,13 @@
   address.value = makeAddressValue(window.data.getX(mainPin, mainPin.offsetWidth / 2), window.data.getY(mainPin, mainPin.offsetHeight / 2));
 
   // устанавливаем первоначальные значения полей тип и цена за ночь
-  price.min = MIN_PRICES[type.value];
-  price.placeholder = MIN_PRICES[type.value];
+  price.min = MinPrices[type.value];
+  price.placeholder = MinPrices[type.value];
 
   // синхронизируем поля тип и цена за ночь
   type.onchange = function () {
-    price.min = MIN_PRICES[this.value];
-    price.placeholder = MIN_PRICES[this.value];
+    price.min = MinPrices[this.value];
+    price.placeholder = MinPrices[this.value];
   };
 
   // устанавливаем первоначальные значения полей дат заезда и выезда

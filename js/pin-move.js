@@ -16,7 +16,7 @@
       moveEvt.preventDefault();
       window.formValidation.address.value = window.formValidation.makeAddressValue(window.data.getX(window.formValidation.mainPin, window.formValidation.mainPin.offsetWidth / 2), window.data.getY(window.formValidation.mainPin, window.formValidation.mainPin.offsetHeight + PSEUDO_HEIGHT)); // меняем значение в поле адреса на каждый мув
       if (isFirstMove) { // если первый мув, приводим страницу в активное состояние
-        window.enablePage();
+        window.pins.enablePage();
         isFirstMove = false;
       }
       var shift = {
