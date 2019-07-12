@@ -7,7 +7,7 @@
     'palace': 'Дворец',
     'house': 'Дом'
   };
-  var numTostring = function (number, forms) {
+  var numTostring = function (number, forms) { // функция возвращает правильную форму слова в зависимости от числа
     var numberOne = Math.abs(number) % 100;
     var numberTwo = number % 10;
     if (numberOne > 10 && numberOne < 20) {
