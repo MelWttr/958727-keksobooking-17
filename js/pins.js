@@ -28,6 +28,7 @@
   var successHandler = function (data) {
     window.announcements = data;
     createPins(window.announcements.slice(0, 5), pinTemplate);
+    window.renderCard(window.announcements);
   };
 
   var errorHandler = function (message) {
