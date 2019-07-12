@@ -11,10 +11,10 @@
   accomodationType.addEventListener('change', function () {
     var filteredItems = accomodationType.value === 'any' ? window.announcements.slice(0, 5) : filterElements(window.announcements, 'offer', 'type', accomodationType.value);
 
-    var mapPins = document.querySelectorAll('.map__pin');
-    for (var i = 1; i < mapPins.length; i++) {
-      mapPins[i].remove();
-    }
+    var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    mapPins.forEach(function (element) {
+      element.remove();
+    });
     window.pins.createPins(filteredItems, window.pins.pinTemplate);
   });
 })();

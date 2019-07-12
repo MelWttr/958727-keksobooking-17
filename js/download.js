@@ -3,22 +3,29 @@
 (function () {
   var URL = 'https://js.dump.academy/keksobooking/data';
 
+  var Code = {
+    SUCCESS: 200,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED_USER: 401,
+    NOT_FOUND: 404
+  };
+
   window.download = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
       var message;
       switch (xhr.status) {
-        case 200:
+        case Code.SUCCESS:
           onSuccess(xhr.response);
           break;
-        case 400:
+        case Code.BAD_REQUEST:
           message = 'Неверный запрос';
           break;
-        case 401:
+        case Code.UNAUTHORIZED_USER:
           message = 'Пользователь не авторизован';
           break;
-        case 404:
+        case Code.NOT_FOUND:
           message = 'Страница не найдена';
           break;
         default:
