@@ -18,9 +18,11 @@
       window.insertCard(window.responseObject, index);
     };
 
-    element.addEventListener('click', function (evt) {
-      pinClickHandler(evt);
-    });
+    element.addEventListener('click', pinClickHandler);
+
+    // element.addEventListener('click', function (evt) {
+    //   pinClickHandler(evt);
+    // });
 
     return element;
   };
