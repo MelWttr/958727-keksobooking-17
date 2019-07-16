@@ -20,8 +20,8 @@
       return forms[2];
     }
   };
-  window.renderCard = function (array) {
-    var cardSource = array[0];
+
+  window.renderCard = function (cardSource) {
     var cardTemplate = document.querySelector('#card').content;
     cardTemplate.querySelector('img').src = cardSource.author.avatar;
     cardTemplate.querySelector('.popup__title').textContent = cardSource.offer.title;
@@ -56,7 +56,7 @@
       }
       popupPhotos.appendChild(images);
     }
-    window.data.map.insertBefore(cardTemplate, window.data.map.querySelector('.map__filters-container'));
+    return cardTemplate;
   };
 })();
 

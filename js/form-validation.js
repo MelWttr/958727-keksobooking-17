@@ -30,15 +30,13 @@
 
   toggleFields(true); // выключает все поля в форме
 
-  var mainPin = window.data.map.querySelector('.map__pin--main');
-
   // возвращает строку с координатами x и y для записи в поле адрес
   var makeAddressValue = function (x, y) {
     return x + ',' + y;
   };
 
   // заполняет поле с адресом координатами главного пина
-  address.value = makeAddressValue(window.data.getX(mainPin, mainPin.offsetWidth / 2), window.data.getY(mainPin, mainPin.offsetHeight / 2));
+  address.value = makeAddressValue(window.data.getX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getY(window.data.mainPin, window.data.mainPin.offsetHeight / 2));
 
   // устанавливаем первоначальные значения полей тип и цена за ночь
   price.min = minPrices[type.value];
@@ -64,7 +62,6 @@
   };
 
   window.formValidation = {
-    mainPin: mainPin,
     address: address,
     form: form,
     toggleFields: toggleFields,
