@@ -9,7 +9,7 @@
     });
   };
   accomodationType.addEventListener('change', function () {
-    var filteredItems = accomodationType.value === 'any' ? window.announcements.slice(0, 5) : filterElements(window.announcements, 'offer', 'type', accomodationType.value);
+    var filteredItems = accomodationType.value === 'any' ? window.responseObject.slice(0, 5) : filterElements(window.responseObject, 'offer', 'type', accomodationType.value);
 
     var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     mapPins.forEach(function (element) {
