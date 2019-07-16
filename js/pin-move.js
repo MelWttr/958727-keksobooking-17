@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var PSEUDO_HEIGHT = 22;
+  var PSEUDO_HEIGHT = 22; // высота хвоста главного пина
 
   // далее описана логика перемещения пина по карте
   window.data.mainPin.addEventListener('mousedown', function (evt) {
@@ -13,7 +13,9 @@
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      window.formValidation.address.value = window.formValidation.makeAddressValue(window.data.getX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getY(window.data.mainPin, window.data.mainPin.offsetHeight + PSEUDO_HEIGHT)); // меняем значение в поле адреса на каждый мув
+      var mainPinDefaultX = window.data.getX(window.data.mainPin, window.data.mainPin.offsetWidth / 2); // координата X главного пина
+      var mainPinDefaultY = window.data.getY(window.data.mainPin, window.data.mainPin.offsetHeight + PSEUDO_HEIGHT); // координата Y главного пина
+      window.formValidation.address.value = window.formValidation.makeAddressValue(mainPinDefaultX, mainPinDefaultY); // меняем значение в поле адреса на каждый мув
       if (window.data.isFirstMove) { // если первый мув, приводим страницу в активное состояние
         window.pins.enablePage();
         window.data.isFirstMove = false;
@@ -32,10 +34,14 @@
       var pinX = window.data.mainPin.offsetLeft - shift.x;
 
       // задаем границы перемещения пина по карте
-      if (pinY >= (window.data.WINDOW_HEIGHT_MIN - (window.data.mainPin.offsetHeight + PSEUDO_HEIGHT)) && pinY <= (window.data.WINDOW_HEIGHT_MAX - (window.data.mainPin.offsetHeight + PSEUDO_HEIGHT))) {
+      var minBottomValue = window.data.WINDOW_HEIGHT_MIN - (window.data.mainPin.offsetHeight + PSEUDO_HEIGHT);
+      var maxTopValue = window.data.WINDOW_HEIGHT_MAX - (window.data.mainPin.offsetHeight + PSEUDO_HEIGHT);
+      var minLeftValue = -(window.data.mainPin.offsetWidth / 2);
+      var maxRightValue = window.data.WINDOW_WIDTH - window.data.mainPin.offsetWidth / 2;
+      if (pinY >= minBottomValue && pinY <= maxTopValue) {
         window.data.mainPin.style.top = (window.data.mainPin.offsetTop - shift.y) + 'px';
       }
-      if (pinX > -(window.data.mainPin.offsetWidth / 2) && pinX < window.data.WINDOW_WIDTH - window.data.mainPin.offsetWidth / 2) {
+      if (pinX > minLeftValue && pinX < maxRightValue) {
         window.data.mainPin.style.left = (window.data.mainPin.offsetLeft - shift.x) + 'px';
       }
     };

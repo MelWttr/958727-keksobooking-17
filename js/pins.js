@@ -13,20 +13,14 @@
     element.querySelector('img').alt = announcement.offer.type;
     element.dataset.id = announcementIndex;
 
-    element.addEventListener('click', function (evt) {
-      pinClickHandler(evt);
-    });
-    element.addEventListener('click', pinClickHandler);
-
     var pinClickHandler = function (evt) {
       var index = evt.currentTarget.dataset.id;
       window.insertCard(window.responseObject, index);
     };
 
-    // var cardInsertionHandler = function (evt, objects) {
-    //   var index = evt.currentTarget.dataset.id;
-    //   window.insertCard(objects, index);
-    // };
+    element.addEventListener('click', function (evt) {
+      pinClickHandler(evt);
+    });
 
     return element;
   };

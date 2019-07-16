@@ -7,7 +7,7 @@
     'palace': 'Дворец',
     'house': 'Дом'
   };
-  var numTostring = function (number, forms) { // функция возвращает правильную форму слова в зависимости от числа
+  var numToString = function (number, forms) { // функция возвращает правильную форму слова в зависимости от числа
     var numberOne = Math.abs(number) % 100;
     var numberTwo = number % 10;
     if (numberOne > 10 && numberOne < 20) {
@@ -29,7 +29,14 @@
     cardTemplate.querySelector('.popup__text--address').textContent = cardSource.offer.address;
     cardTemplate.querySelector('.popup__text--price').textContent = cardSource.offer.price + '₽/ночь';
     cardTemplate.querySelector('.popup__type').textContent = types[cardSource.offer.type];
-    cardTemplate.querySelector('.popup__text--capacity').textContent = cardSource.offer.rooms + ' ' + numTostring(cardSource.offer.rooms, ['комната', 'комнаты', 'комнат']) + ' для ' + cardSource.offer.guests + ' ' + numTostring(cardSource.offer.rooms, ['гостя', 'гостей', 'гостей']);
+
+    var numberOfRooms = cardSource.offer.rooms;
+    var numberOfGuests = cardSource.offer.guests;
+    var room = numToString(numberOfRooms, ['комната', 'комнаты', 'комнат']);
+    var guest = numToString(numberOfGuests, ['гостя', 'гостей', 'гостей']);
+
+    cardTemplate.querySelector('.popup__text--capacity').textContent = numberOfRooms + ' ' + room + ' для ' + numberOfGuests + ' ' + guest;
+
     cardTemplate.querySelector('.popup__text--time').textContent = 'Заезд после ' + cardSource.offer.checkin + ', выезд до ' + cardSource.offer.checkout;
 
     var renderFeatutes = function (featuresList) {
