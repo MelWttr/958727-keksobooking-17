@@ -2,56 +2,39 @@
 (function () {
   var PIN_LIMIT = 5;
   var pins = document.querySelector('.map__pins');
-  // window.announcements = null;
   var main = document.querySelector('main');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // сохраняем в переменную шаблон пина
 
-  var closePopup = function (popup) {
-    popup.classList.add('hidden');
-  };
-
-  var renderPin = function (announcement, element, announcementIndex) { // заполняет шаблон объявления данными
+  var renderPin = function (announcement, announcementIndex) { // заполняет шаблон объявления данными
+    var element = pinTemplate.cloneNode(true);
     element.querySelector('img').src = announcement.author.avatar;
     element.style.top = announcement.location.y + 'px';
     element.style.left = announcement.location.x + 'px';
     element.querySelector('img').alt = announcement.offer.type;
     element.dataset.id = announcementIndex;
 
-    var pinClickHandler = function (evt) { // функция фставки попапа в дом (для обработчика при клике на пин).
-      var card = window.data.map.querySelector('.popup');
+    element.addEventListener('click', function (evt) {
+      pinClickHandler(evt);
+    });
+    element.addEventListener('click', pinClickHandler);
+
+    var pinClickHandler = function (evt) {
       var index = evt.currentTarget.dataset.id;
-      var newCard = window.renderCard(window.announcements[index]);
-      var filtersContainer = window.data.map.querySelector('.map__filters-container');
-      if (window.data.map.contains(card)) {
-        window.data.map.replaceChild(card, newCard);
-      } else {
-        window.data.map.insertBefore(newCard, filtersContainer);
-      }
-      newCard = window.data.map.querySelector('.popup');
-      var popupCloseBtnHandler = function () {
-        closePopup(newCard);
-      };
-      var popupCloseOnEscPress = function (evt) {
-        if (evt.keyCode === window.data.ESC) {
-          closePopup(newCard);
-          document.removeEventListener('keydown', popupCloseOnEscPress);
-        }
-      };
-      var closePopupBtn = newCard.querySelector('.popup__close');
-      closePopupBtn.addEventListener('click', popupCloseBtnHandler);
-      document.addEventListener('keydown', popupCloseOnEscPress);
+      window.insertCard(window.responseObject, index);
     };
 
-    element.addEventListener('click', pinClickHandler);
+    // var cardInsertionHandler = function (evt, objects) {
+    //   var index = evt.currentTarget.dataset.id;
+    //   window.insertCard(objects, index);
+    // };
 
     return element;
   };
 
-  var createPins = function (elements, node) {
+  var createPins = function (elements) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < elements.length; i++) {
-      var pin = node.cloneNode(true);
-      fragment.appendChild(renderPin(elements[i], pin, i));
+      fragment.appendChild(renderPin(elements[i], i));
     }
     pins.appendChild(fragment);
   };
@@ -78,9 +61,8 @@
   };
 
 
-  var successHandler = function (data) {
-    window.announcements = data;
-    createPins(window.announcements.slice(0, PIN_LIMIT), pinTemplate);
+  var successHandler = function () {
+    createPins(window.responseObject.slice(0, PIN_LIMIT));
   };
 
   var errorHandler = function (message) {

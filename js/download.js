@@ -17,7 +17,8 @@
       var message;
       switch (xhr.status) {
         case Code.SUCCESS:
-          onSuccess(xhr.response);
+          window.responseObject = xhr.response;
+          onSuccess();
           break;
         case Code.BAD_REQUEST:
           message = 'Неверный запрос';
