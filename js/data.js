@@ -1,11 +1,14 @@
 'use strict';
 (function () {
   var map = document.querySelector('.map');
+  var mainPin = map.querySelector('.map__pin--main');
+  var isFirstMove = true;
 
   var WINDOW_WIDTH = map.offsetWidth;
   var WINDOW_HEIGHT_MAX = 630;
   var WINDOW_HEIGHT_MIN = 130;
   var ESC = 27;
+
 
   // парсит в число из строки координату абсолютно спозиционированного элемента
   var extractCoord = function (str) {
@@ -30,14 +33,16 @@
     popup.classList.add('hidden');
   };
 
-  var refreshPage = function () {
-    window.location.reload();
-  };
+  // var refreshPage = function () {
+  //   window.location.reload();
+  // };
 
 
   window.data = {
-    ESC: ESC,
+    isFirstMove: isFirstMove,
     map: map,
+    mainPin: mainPin,
+    ESC: ESC,
     WINDOW_WIDTH: WINDOW_WIDTH,
     WINDOW_HEIGHT_MIN: WINDOW_HEIGHT_MIN,
     WINDOW_HEIGHT_MAX: WINDOW_HEIGHT_MAX,
@@ -45,8 +50,7 @@
     getY: getY,
     extractCoord: extractCoord,
     getRandom: getRandom,
-    closePopup: closePopup,
-    refreshPage: refreshPage
+    closePopup: closePopup
   };
 
 })();
