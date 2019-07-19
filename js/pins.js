@@ -20,10 +20,6 @@
 
     element.addEventListener('click', pinClickHandler);
 
-    // element.addEventListener('click', function (evt) {
-    //   pinClickHandler(evt);
-    // });
-
     return element;
   };
 

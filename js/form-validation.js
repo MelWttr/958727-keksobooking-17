@@ -17,14 +17,14 @@
     field.disabled = isDisabled;
   };
 
-  var field = form.querySelector('.ad-form-header__input');
-  var fieldSets = form.querySelectorAll('.ad-form__element');
+  var formInput = form.querySelector('.ad-form-header__input');
+  var formElements = form.querySelectorAll('.ad-form__element');
 
   //  переключает все поля формы на странице из активного в неактивное состояние и наоборот
   var toggleFields = function (isDisabled) {
-    toggleElement(field, isDisabled);
-    for (var i = 0; i < fieldSets.length; i++) {
-      toggleElement(fieldSets[i], isDisabled);
+    toggleElement(formInput, isDisabled);
+    for (var i = 0; i < formElements.length; i++) {
+      toggleElement(formElements[i], isDisabled);
     }
   };
 
@@ -60,6 +60,31 @@
       this.timein.value = evt.target.value;
     }
   };
+
+  var roomNumber = form.querySelector('#room_number');
+  var roomCapacity = form.querySelector('#capacity');
+
+  // проверяет правильность заполнения полей количества комнат и гостей
+  var numberValidity = function (roomValue, capacityValue) {
+    var message = '';
+    if (roomValue === 100 && capacityValue === 0) {
+      return message;
+    } else if ((capacityValue > roomValue) || roomValue === 100 || capacityValue === 0) {
+      message = 'недопустимое кол-во';
+    }
+    return message;
+  };
+
+  var roomChangeHandler = function (evt) {
+    roomNumber.setCustomValidity(numberValidity(parseInt(evt.target.value, 10), parseInt(roomCapacity.value, 10)));
+  };
+
+  var capacityChangeHandler = function (evt) {
+    roomNumber.setCustomValidity(numberValidity(parseInt(roomNumber.value, 10), parseInt(evt.target.value, 10)));
+  };
+
+  roomNumber.addEventListener('change', roomChangeHandler);
+  roomCapacity.addEventListener('change', capacityChangeHandler);
 
   window.formValidation = {
     address: address,
