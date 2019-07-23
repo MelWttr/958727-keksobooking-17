@@ -31,7 +31,7 @@
   };
 
   var enablePage = function () { // функция делает страницу активной
-    window.formValidation.toggleFields(false);
+    window.formValidation.setFieldsAvailability(false);
     window.data.map.classList.remove('map--faded');
     window.formValidation.form.classList.remove('ad-form--disabled');
     window.server.download(downloadSuccessHandler, errorHandler);
