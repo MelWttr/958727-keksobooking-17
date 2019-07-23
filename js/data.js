@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var main = document.querySelector('main');
   var map = document.querySelector('.map');
   var mainPin = map.querySelector('.map__pin--main');
   var isFirstMove = true;
@@ -33,13 +34,26 @@
     popup.classList.add('hidden');
   };
 
-  // var refreshPage = function () {
-  //   window.location.reload();
-  // };
+  var clearMap = function () {
+    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var card = map.querySelector('.card');
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
+    card.remove();
+    map.classList.add('map--faded');
+    isFirstMove = true;
+    mainPin.style.top = '375px';
+    mainPin.style.left = '570px';
+  };
 
+  var deletePopup = function (popup) {
+    popup.remove();
+  };
 
   window.data = {
     isFirstMove: isFirstMove,
+    main: main,
     map: map,
     mainPin: mainPin,
     ESC: ESC,
@@ -50,7 +64,9 @@
     getY: getY,
     extractCoord: extractCoord,
     getRandom: getRandom,
-    closePopup: closePopup
+    closePopup: closePopup,
+    clearMap: clearMap,
+    deletePopup: deletePopup
   };
 
 })();

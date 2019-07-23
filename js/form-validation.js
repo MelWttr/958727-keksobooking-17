@@ -9,8 +9,9 @@
   };
   var form = document.querySelector('.ad-form');
   var address = form.querySelector('#address');
-  var type = document.querySelector('#type');
-  var price = document.querySelector('#price');
+  var type = form.querySelector('#type');
+  var price = form.querySelector('#price');
+  var features = form.querySelectorAll('.feature__checkbox');
 
   // переключает поле из активного в неактивное состояние и наоборот
   var toggleElement = function (field, isDisabled) {
@@ -78,7 +79,6 @@
   var roomChangeHandler = function (evt) {
     roomNumber.setCustomValidity(numberValidity(parseInt(evt.target.value, 10), parseInt(roomCapacity.value, 10)));
   };
-
   var capacityChangeHandler = function (evt) {
     roomNumber.setCustomValidity(numberValidity(parseInt(roomNumber.value, 10), parseInt(evt.target.value, 10)));
   };
@@ -86,10 +86,54 @@
   roomNumber.addEventListener('change', roomChangeHandler);
   roomCapacity.addEventListener('change', capacityChangeHandler);
 
+  var clearForm = function () {
+    form.title.textContent = '';
+    type.value = 'flat';
+    form.timein.selectedIndex = 0;
+    form.timeout.selectedIndex = 0;
+    roomNumber.value = 1;
+    roomCapacity.value = 1;
+    features.forEach(function (feature) {
+      feature.checked = false;
+    });
+    form.description.textContent = '';
+    toggleFields(true);
+    form.classList.add('ad-form--disabled');
+  };
+
+  var uploadFormSuccessHandler = function () {
+    clearForm();
+    window.data.clearMap();
+    var successTemplate = document.querySelector('#success').content;
+    window.data.main.appendChild(successTemplate);
+    var success = document.querySelector('.success');
+
+    var onPopupEscPress = function (evt) {
+      if (evt.keyCode === window.data.ESC) {
+        window.data.deletePopup(success);
+        document.removeEventListener('keydown', onPopupEscPress);
+      }
+    };
+
+    success.addEventListener('click', function () {
+      window.data.deletePopup(success);
+    });
+
+    document.addEventListener('keydown', onPopupEscPress);
+  };
+
+  var formSubmitHandler = function (evt) {
+    evt.preventDefault();
+    window.server.upload(new FormData(form), uploadFormSuccessHandler, window.pins.errorHandler);
+  };
+
+  form.addEventListener('submit', formSubmitHandler);
+
   window.formValidation = {
+    toggleFields: toggleFields,
+    clearForm: clearForm,
     address: address,
     form: form,
-    toggleFields: toggleFields,
     makeAddressValue: makeAddressValue
   };
 })();
