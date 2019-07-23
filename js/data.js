@@ -33,11 +33,6 @@
     popup.classList.add('hidden');
   };
 
-  // var refreshPage = function () {
-  //   window.location.reload();
-  // };
-
-
   window.data = {
     isFirstMove: isFirstMove,
     map: map,

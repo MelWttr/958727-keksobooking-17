@@ -13,22 +13,22 @@
   var price = document.querySelector('#price');
 
   // переключает поле из активного в неактивное состояние и наоборот
-  var toggleElement = function (field, isDisabled) {
+  var setElementAvailability = function (field, isDisabled) {
     field.disabled = isDisabled;
   };
 
-  var formInput = form.querySelector('.ad-form-header__input');
+  var formInputElement = form.querySelector('.ad-form-header__input');
   var formElements = form.querySelectorAll('.ad-form__element');
 
   //  переключает все поля формы на странице из активного в неактивное состояние и наоборот
-  var toggleFields = function (isDisabled) {
-    toggleElement(formInput, isDisabled);
+  var setFieldsAvailability = function (isDisabled) {
+    setElementAvailability(formInputElement, isDisabled);
     for (var i = 0; i < formElements.length; i++) {
-      toggleElement(formElements[i], isDisabled);
+      setElementAvailability(formElements[i], isDisabled);
     }
   };
 
-  toggleFields(true); // выключает все поля в форме
+  setFieldsAvailability(true); // выключает все поля в форме
 
   // возвращает строку с координатами x и y для записи в поле адрес
   var makeAddressValue = function (x, y) {
@@ -61,35 +61,32 @@
     }
   };
 
-  var roomNumber = form.querySelector('#room_number');
-  var roomCapacity = form.querySelector('#capacity');
+  var roomQuantity = form.querySelector('#room_number');
+  var guestQuantity = form.querySelector('#capacity');
 
   // проверяет правильность заполнения полей количества комнат и гостей
-  var numberValidity = function (roomValue, capacityValue) {
-    var message = '';
-    if (roomValue === 100 && capacityValue === 0) {
-      return message;
-    } else if ((capacityValue > roomValue) || roomValue === 100 || capacityValue === 0) {
-      message = 'недопустимое кол-во';
+  var quantityValidation = function (roomQuantityValue, guestQuantityValue) {
+    if ((roomQuantityValue === 100 && guestQuantityValue > 0) || (roomQuantityValue < 100 && guestQuantityValue === 0) || (roomQuantityValue < guestQuantityValue)) {
+      return 'недопустимое кол-во';
     }
-    return message;
+    return '';
   };
 
   var roomChangeHandler = function (evt) {
-    roomNumber.setCustomValidity(numberValidity(parseInt(evt.target.value, 10), parseInt(roomCapacity.value, 10)));
+    roomQuantity.setCustomValidity(quantityValidation(parseInt(evt.target.value, 10), parseInt(guestQuantity.value, 10)));
   };
 
   var capacityChangeHandler = function (evt) {
-    roomNumber.setCustomValidity(numberValidity(parseInt(roomNumber.value, 10), parseInt(evt.target.value, 10)));
+    roomQuantity.setCustomValidity(quantityValidation(parseInt(roomQuantity.value, 10), parseInt(evt.target.value, 10)));
   };
 
-  roomNumber.addEventListener('change', roomChangeHandler);
-  roomCapacity.addEventListener('change', capacityChangeHandler);
+  roomQuantity.addEventListener('change', roomChangeHandler);
+  guestQuantity.addEventListener('change', capacityChangeHandler);
 
   window.formValidation = {
     address: address,
     form: form,
-    toggleFields: toggleFields,
+    setFieldsAvailability: setFieldsAvailability,
     makeAddressValue: makeAddressValue
   };
 })();
