@@ -13,22 +13,22 @@
   var price = document.querySelector('#price');
 
   // переключает поле из активного в неактивное состояние и наоборот
-  var toggleElement = function (field, isDisabled) {
+  var setElementAvailability = function (field, isDisabled) {
     field.disabled = isDisabled;
   };
 
-  var field = form.querySelector('.ad-form-header__input');
-  var fieldSets = form.querySelectorAll('.ad-form__element');
+  var formInputElement = form.querySelector('.ad-form-header__input');
+  var formElements = form.querySelectorAll('.ad-form__element');
 
   //  переключает все поля формы на странице из активного в неактивное состояние и наоборот
-  var toggleFields = function (isDisabled) {
-    toggleElement(field, isDisabled);
-    for (var i = 0; i < fieldSets.length; i++) {
-      toggleElement(fieldSets[i], isDisabled);
+  var setFieldsAvailability = function (isDisabled) {
+    setElementAvailability(formInputElement, isDisabled);
+    for (var i = 0; i < formElements.length; i++) {
+      setElementAvailability(formElements[i], isDisabled);
     }
   };
 
-  toggleFields(true); // выключает все поля в форме
+  setFieldsAvailability(true); // выключает все поля в форме
 
   // возвращает строку с координатами x и y для записи в поле адрес
   var makeAddressValue = function (x, y) {
@@ -61,10 +61,32 @@
     }
   };
 
+  var roomQuantity = form.querySelector('#room_number');
+  var guestQuantity = form.querySelector('#capacity');
+
+  // проверяет правильность заполнения полей количества комнат и гостей
+  var quantityValidation = function (roomQuantityValue, guestQuantityValue) {
+    if ((roomQuantityValue === 100 && guestQuantityValue > 0) || (roomQuantityValue < 100 && guestQuantityValue === 0) || (roomQuantityValue < guestQuantityValue)) {
+      return 'недопустимое кол-во';
+    }
+    return '';
+  };
+
+  var roomChangeHandler = function (evt) {
+    roomQuantity.setCustomValidity(quantityValidation(parseInt(evt.target.value, 10), parseInt(guestQuantity.value, 10)));
+  };
+
+  var capacityChangeHandler = function (evt) {
+    roomQuantity.setCustomValidity(quantityValidation(parseInt(roomQuantity.value, 10), parseInt(evt.target.value, 10)));
+  };
+
+  roomQuantity.addEventListener('change', roomChangeHandler);
+  guestQuantity.addEventListener('change', capacityChangeHandler);
+
   window.formValidation = {
     address: address,
     form: form,
-    toggleFields: toggleFields,
+    setFieldsAvailability: setFieldsAvailability,
     makeAddressValue: makeAddressValue
   };
 })();

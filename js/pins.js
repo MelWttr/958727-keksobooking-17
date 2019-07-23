@@ -20,10 +20,6 @@
 
     element.addEventListener('click', pinClickHandler);
 
-    // element.addEventListener('click', function (evt) {
-    //   pinClickHandler(evt);
-    // });
-
     return element;
   };
 
@@ -41,21 +37,20 @@
   };
 
   var enablePage = function () { // функция делает страницу активной
-    window.formValidation.toggleFields(false);
+    window.formValidation.setFieldsAvailability(false);
     window.data.map.classList.remove('map--faded');
     window.formValidation.form.classList.remove('ad-form--disabled');
     window.download(successHandler, errorHandler);
   };
 
   var disablePage = function () { // функция делает страницу неактивной
-    window.formValidation.toggleFields(true);
+    window.formValidation.setFieldsAvailability(true);
     window.data.map.classList.add('map--faded');
     window.formValidation.form.classList.add('ad-form--disabled');
     window.data.isFirstMove = true;
     window.data.mainPin.style.top = '375px';
     window.data.mainPin.style.left = '570px';
   };
-
 
   var successHandler = function () {
     createPins(window.responseObject.slice(0, PIN_LIMIT));
