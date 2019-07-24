@@ -4,13 +4,13 @@
   var pins = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // сохраняем в переменную шаблон пина
 
-  var renderPin = function (announcement, announcementIndex) { // заполняет шаблон объявления данными
+  var renderPin = function (announcement) { // заполняет шаблон объявления данными
     var element = pinTemplate.cloneNode(true);
     element.querySelector('img').src = announcement.author.avatar;
     element.style.top = announcement.location.y + 'px';
     element.style.left = announcement.location.x + 'px';
     element.querySelector('img').alt = announcement.offer.type;
-    element.dataset.id = announcementIndex;
+    element.dataset.id = window.responseObject.indexOf(announcement);
 
     var pinClickHandler = function (evt) {
       var index = evt.currentTarget.dataset.id;
@@ -25,7 +25,7 @@
   var createPins = function (elements) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < elements.length; i++) {
-      fragment.appendChild(renderPin(elements[i], i));
+      fragment.appendChild(renderPin(elements[i]));
     }
     pins.appendChild(fragment);
   };

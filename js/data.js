@@ -36,13 +36,15 @@
 
   var clearMap = function () {
     var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
-    var card = map.querySelector('.card');
+    var card = map.querySelector('.map__card');
     pins.forEach(function (pin) {
       pin.remove();
     });
-    card.remove();
+    if (card) {
+      card.remove();
+    }
     map.classList.add('map--faded');
-    isFirstMove = true;
+    // isFirstMove = true;
     mainPin.style.top = '375px';
     mainPin.style.left = '570px';
   };

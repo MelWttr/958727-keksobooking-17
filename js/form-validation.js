@@ -9,6 +9,8 @@
   };
   var form = document.querySelector('.ad-form');
   var address = form.querySelector('#address');
+  var title = form.querySelector('#title');
+  var description = form.querySelector('#description');
   var type = form.querySelector('#type');
   var price = form.querySelector('#price');
   var features = form.querySelectorAll('.feature__checkbox');
@@ -84,8 +86,9 @@
   guestQuantity.addEventListener('change', capacityChangeHandler);
 
   var clearForm = function () {
-    form.title.textContent = '';
+    title.value = '';
     type.value = 'flat';
+    price.value = minPrices[type.value];
     form.timein.selectedIndex = 0;
     form.timeout.selectedIndex = 0;
     roomQuantity.value = 1;
@@ -93,7 +96,7 @@
     features.forEach(function (feature) {
       feature.checked = false;
     });
-    form.description.textContent = '';
+    description.value = '';
     setFieldsAvailability(true);
     form.classList.add('ad-form--disabled');
   };
@@ -101,7 +104,9 @@
   var uploadFormSuccessHandler = function () {
     clearForm();
     window.data.clearMap();
-    var successTemplate = document.querySelector('#success').content;
+    window.data.isFirstMove = true;
+    var popupTemplate = document.querySelector('#success').content;
+    var successTemplate = popupTemplate.cloneNode(true);
     window.data.main.appendChild(successTemplate);
     var success = document.querySelector('.success');
 
