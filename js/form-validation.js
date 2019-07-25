@@ -9,8 +9,11 @@
   };
   var form = document.querySelector('.ad-form');
   var address = form.querySelector('#address');
-  var type = document.querySelector('#type');
-  var price = document.querySelector('#price');
+  var title = form.querySelector('#title');
+  var description = form.querySelector('#description');
+  var type = form.querySelector('#type');
+  var price = form.querySelector('#price');
+  var features = form.querySelectorAll('.feature__checkbox');
 
   // переключает поле из активного в неактивное состояние и наоборот
   var setElementAvailability = function (field, isDisabled) {
@@ -75,7 +78,6 @@
   var roomChangeHandler = function (evt) {
     roomQuantity.setCustomValidity(quantityValidation(parseInt(evt.target.value, 10), parseInt(guestQuantity.value, 10)));
   };
-
   var capacityChangeHandler = function (evt) {
     roomQuantity.setCustomValidity(quantityValidation(parseInt(roomQuantity.value, 10), parseInt(evt.target.value, 10)));
   };
@@ -83,7 +85,54 @@
   roomQuantity.addEventListener('change', roomChangeHandler);
   guestQuantity.addEventListener('change', capacityChangeHandler);
 
+  var clearForm = function () {
+    title.value = '';
+    type.value = 'flat';
+    price.value = minPrices[type.value];
+    form.timein.selectedIndex = 0;
+    form.timeout.selectedIndex = 0;
+    roomQuantity.value = 1;
+    guestQuantity.value = 1;
+    features.forEach(function (feature) {
+      feature.checked = false;
+    });
+    description.value = '';
+    setFieldsAvailability(true);
+    form.classList.add('ad-form--disabled');
+  };
+
+  var uploadFormSuccessHandler = function () {
+    clearForm();
+    window.data.clearMap();
+    window.data.isFirstMove = true;
+    var popupTemplate = document.querySelector('#success').content;
+    var successTemplate = popupTemplate.cloneNode(true);
+    window.data.main.appendChild(successTemplate);
+    var success = document.querySelector('.success');
+
+    var onPopupEscPress = function (evt) {
+      if (evt.keyCode === window.data.ESC) {
+        window.data.deletePopup(success);
+        document.removeEventListener('keydown', onPopupEscPress);
+      }
+    };
+
+    success.addEventListener('click', function () {
+      window.data.deletePopup(success);
+    });
+
+    document.addEventListener('keydown', onPopupEscPress);
+  };
+
+  var formSubmitHandler = function (evt) {
+    evt.preventDefault();
+    window.server.upload(new FormData(form), uploadFormSuccessHandler, window.pins.errorHandler);
+  };
+
+  form.addEventListener('submit', formSubmitHandler);
+
   window.formValidation = {
+    clearForm: clearForm,
     address: address,
     form: form,
     setFieldsAvailability: setFieldsAvailability,

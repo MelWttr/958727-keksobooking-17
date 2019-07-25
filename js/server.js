@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/keksobooking/data';
-
+  var DOWNLOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var UPLOAD_URL = 'https://js.dump.academy/keksobooking';
   var Code = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
@@ -10,7 +10,9 @@
     NOT_FOUND: 404
   };
 
-  window.download = function (onSuccess, onError) {
+  var TIMEOUT = 10000;
+
+  var setup = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -35,16 +37,34 @@
       if (message) {
         onError(message);
       }
+
     });
 
     xhr.addEventListener('error', function () {
       onError('Ошибка соединения');
     });
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
     xhr.addEventListener('timeout', function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'сек');
     });
-    xhr.open('GET', URL);
+
+    return xhr;
+  };
+
+  var download = function (onSuccess, onError) {
+    var xhr = setup(onSuccess, onError);
+    xhr.open('GET', DOWNLOAD_URL);
     xhr.send();
+  };
+
+  var upload = function (data, onSuccess, onError) {
+    var xhr = setup(onSuccess, onError);
+    xhr.open('POST', UPLOAD_URL);
+    xhr.send(data);
+  };
+
+  window.server = {
+    download: download,
+    upload: upload
   };
 })();
