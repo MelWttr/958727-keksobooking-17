@@ -37,16 +37,6 @@
     window.server.download(downloadSuccessHandler, errorHandler);
   };
 
-  // var disablePage = function () { // функция делает страницу неактивной
-  //   window.formValidation.toggleFields(true);
-  //   window.data.map.classList.add('map--faded');
-  //   window.formValidation.form.classList.add('ad-form--disabled');
-  //   window.data.isFirstMove = true;
-  //   window.data.mainPin.style.top = '375px';
-  //   window.data.mainPin.style.left = '570px';
-  // };
-
-
   var downloadSuccessHandler = function () {
     createPins(window.responseObject.slice(0, PIN_LIMIT));
   };
