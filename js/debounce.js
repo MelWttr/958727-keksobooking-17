@@ -1,14 +1,13 @@
 'use strict';
 
 (function () {
-  var TIMEOUT = 300;
   var lastTimeout;
-  window.debounce = function (params, callback) {
+  window.debounceTimeout = function (callback, timeout, params) {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
     lastTimeout = window.setTimeout(function () {
       callback(params);
-    }, TIMEOUT);
+    }, timeout);
   };
 })();
