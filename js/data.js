@@ -8,6 +8,8 @@
   var WINDOW_WIDTH = map.offsetWidth;
   var WINDOW_HEIGHT_MAX = 630;
   var WINDOW_HEIGHT_MIN = 130;
+  var MAIN_PIN_DEFAULT_LEFT = 570;
+  var MAIN_PIN_DEFAULT_TOP = 375;
   var ESC = 27;
 
 
@@ -44,9 +46,8 @@
       card.remove();
     }
     map.classList.add('map--faded');
-    // isFirstMove = true;
-    mainPin.style.top = '375px';
-    mainPin.style.left = '570px';
+    mainPin.style.top = MAIN_PIN_DEFAULT_TOP + 'px';
+    mainPin.style.left = MAIN_PIN_DEFAULT_LEFT + 'px';
   };
 
   var deletePopup = function (popup) {

@@ -14,6 +14,9 @@
   var type = form.querySelector('#type');
   var price = form.querySelector('#price');
   var features = form.querySelectorAll('.feature__checkbox');
+  var avatarImage = document.querySelector('.ad-form-header__preview img');
+  var photosContainer = document.querySelector('.ad-form__photo');
+  var appartmentPhotos = Array.from(photosContainer.children);
 
   // переключает поле из активного в неактивное состояние и наоборот
   var setElementAvailability = function (field, isDisabled) {
@@ -87,6 +90,7 @@
 
   var clearForm = function () {
     title.value = '';
+    address.value = makeAddressValue(window.data.getX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getY(window.data.mainPin, window.data.mainPin.offsetHeight / 2));
     type.value = 'flat';
     price.value = minPrices[type.value];
     form.timein.selectedIndex = 0;
@@ -98,12 +102,19 @@
     });
     description.value = '';
     setFieldsAvailability(true);
+    avatarImage.src = 'img/muffin-grey.svg';
+    if (appartmentPhotos) {
+      appartmentPhotos.forEach(function (appartmentPhoto) {
+        appartmentPhoto.remove();
+      });
+    }
+
     form.classList.add('ad-form--disabled');
   };
 
   var uploadFormSuccessHandler = function () {
-    clearForm();
     window.data.clearMap();
+    clearForm();
     window.data.isFirstMove = true;
     var popupTemplate = document.querySelector('#success').content;
     var successTemplate = popupTemplate.cloneNode(true);
@@ -130,6 +141,14 @@
   };
 
   form.addEventListener('submit', formSubmitHandler);
+
+  var resetBtn = form.querySelector('.ad-form__reset');
+  resetBtn.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.data.clearMap();
+    clearForm();
+    window.data.isFirstMove = true;
+  });
 
   window.formValidation = {
     clearForm: clearForm,
