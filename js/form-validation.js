@@ -1,6 +1,8 @@
 'use strict';
 (function () {
   // хранит минимальные стоимости за ночь для разных типов жилья
+  var AVATAR_DEFAULT_IMAGE = 'img/muffin-grey.svg';
+
   var minPrices = {
     'bungalo': '0',
     'flat': '1000',
@@ -102,7 +104,7 @@
     });
     description.value = '';
     setFieldsAvailability(true);
-    avatarImage.src = 'img/muffin-grey.svg';
+    avatarImage.src = AVATAR_DEFAULT_IMAGE;
     var appartmentPhotos = Array.from(photosContainer.children);
     if (appartmentPhotos) {
       appartmentPhotos.forEach(function (appartmentPhoto) {
