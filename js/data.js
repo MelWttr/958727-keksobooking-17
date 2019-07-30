@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var imagesArray = [];
   var main = document.querySelector('main');
   var map = document.querySelector('.map');
   var mainPin = map.querySelector('.map__pin--main');
@@ -59,6 +60,7 @@
     main: main,
     map: map,
     mainPin: mainPin,
+    imagesArray: imagesArray,
     ESC: ESC,
     WINDOW_WIDTH: WINDOW_WIDTH,
     WINDOW_HEIGHT_MIN: WINDOW_HEIGHT_MIN,

@@ -31,18 +31,22 @@
   });
 
   flatPicturesChooser.addEventListener('change', function () {
-    var file = flatPicturesChooser.files[0];
-    var reader = createReader(file);
-    if (reader) {
-      reader.addEventListener('load', function () {
-        var element = document.createElement('img');
-        element.src = reader.result;
-        element.width = 70;
-        element.height = 70;
-        photosContainer.appendChild(element);
-      });
-      reader.readAsDataURL(file);
-    }
+    var files = Array.from(flatPicturesChooser.files);
+    files.forEach(function (file) {
+      var reader = createReader(file);
+      if (reader) {
+        reader.addEventListener('load', function () {
+          var element = document.createElement('img');
+          element.src = reader.result;
+          element.width = 70;
+          element.height = 70;
+          photosContainer.appendChild(element);
+        });
+        reader.readAsDataURL(file);
+        window.data.imagesArray.push(file);
+      }
+    });
+
   });
 
 })();

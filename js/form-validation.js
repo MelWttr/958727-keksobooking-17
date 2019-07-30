@@ -140,7 +140,12 @@
 
   var formSubmitHandler = function (evt) {
     evt.preventDefault();
-    window.server.upload(new FormData(form), uploadFormSuccessHandler, window.pins.errorHandler);
+    var formData = new FormData(form);
+    formData.delete('images');
+    window.data.imagesArray.forEach(function (image) {
+      formData.append('images', image);
+    });
+    window.server.upload(formData, uploadFormSuccessHandler, window.pins.errorHandler);
   };
 
   form.addEventListener('submit', formSubmitHandler);
