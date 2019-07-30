@@ -67,6 +67,7 @@
   };
 
   window.pins = {
+    PIN_LIMIT: PIN_LIMIT,
     enablePage: enablePage,
     createPins: createPins,
     pinTemplate: pinTemplate,
