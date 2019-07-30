@@ -16,7 +16,7 @@
   var features = form.querySelectorAll('.feature__checkbox');
   var avatarImage = document.querySelector('.ad-form-header__preview img');
   var photosContainer = document.querySelector('.ad-form__photo');
-  var appartmentPhotos = Array.from(photosContainer.children);
+
 
   // переключает поле из активного в неактивное состояние и наоборот
   var setElementAvailability = function (field, isDisabled) {
@@ -103,6 +103,7 @@
     description.value = '';
     setFieldsAvailability(true);
     avatarImage.src = 'img/muffin-grey.svg';
+    var appartmentPhotos = Array.from(photosContainer.children);
     if (appartmentPhotos) {
       appartmentPhotos.forEach(function (appartmentPhoto) {
         appartmentPhoto.remove();
