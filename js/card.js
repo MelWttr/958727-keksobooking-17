@@ -99,6 +99,7 @@
     var card = window.data.map.querySelector('.popup');
     card.classList.add('hidden');
     document.removeEventListener('keydown', closePopupEscHandler);
+    window.pins.deactivatePin();
   };
 
   var closePopupHandler = function () {

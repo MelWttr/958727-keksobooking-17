@@ -15,6 +15,8 @@
     var pinClickHandler = function (evt) {
       var index = evt.currentTarget.dataset.id;
       window.insertCard(window.responseObject, index);
+      deactivatePin();
+      evt.currentTarget.classList.add('map__pin--active');
     };
 
     element.addEventListener('click', pinClickHandler);
@@ -25,9 +27,18 @@
   var createPins = function (elements) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < elements.length; i++) {
-      fragment.appendChild(renderPin(elements[i]));
+      if (elements[i].offer) {
+        fragment.appendChild(renderPin(elements[i]));
+      }
     }
     pins.appendChild(fragment);
+  };
+
+  var deactivatePin = function () {
+    var pinActive = document.querySelector('.map__pin--active');
+    if (pinActive) {
+      pinActive.classList.remove('map__pin--active');
+    }
   };
 
   var enablePage = function () { // функция делает страницу активной
@@ -70,6 +81,7 @@
     PIN_LIMIT: PIN_LIMIT,
     enablePage: enablePage,
     createPins: createPins,
+    deactivatePin: deactivatePin,
     pinTemplate: pinTemplate,
     errorHandler: errorHandler
   };
