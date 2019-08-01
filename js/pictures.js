@@ -43,7 +43,7 @@
           photosContainer.appendChild(element);
         });
         reader.readAsDataURL(file);
-        window.data.imagesArray.push(file);
+        window.data.images.push(file);
       }
     });
 

@@ -136,7 +136,7 @@
     evt.preventDefault();
     var formData = new FormData(form);
     formData.delete('images');
-    window.data.imagesArray.forEach(function (image) {
+    window.data.images.forEach(function (image) {
       formData.append('images', image);
     });
     window.server.upload(formData, uploadFormSuccessHandler, window.pins.errorHandler);

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var types = {
+  var Types = {
     'bungalo': 'Бунгало',
     'flat': 'Квартира',
     'palace': 'Дворец',
@@ -50,7 +50,7 @@
     }
     checkFieldAvailability(cardSource.offer.title, cardTitle);
     checkFieldAvailability(cardSource.offer.address, cardAddress);
-    checkFieldAvailability(types[cardSource.offer.type], cardType);
+    checkFieldAvailability(Types[cardSource.offer.type], cardType);
 
     var numberOfRooms = cardSource.offer.rooms;
     var numberOfGuests = cardSource.offer.guests;
