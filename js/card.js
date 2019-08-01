@@ -21,14 +21,36 @@
     }
   };
 
+  var checkFieldAvailability = function (source, element) {
+    if (source) {
+      element.textContent = source;
+    } else {
+      element.style.display = 'none';
+    }
+  };
+
   var renderCard = function (cardSource) {
     var popupTemplate = document.querySelector('#card').content;
     var cardTemplate = popupTemplate.cloneNode(true);
-    cardTemplate.querySelector('img').src = cardSource.author.avatar;
-    cardTemplate.querySelector('.popup__title').textContent = cardSource.offer.title;
-    cardTemplate.querySelector('.popup__text--address').textContent = cardSource.offer.address;
-    cardTemplate.querySelector('.popup__text--price').textContent = cardSource.offer.price + '₽/ночь';
-    cardTemplate.querySelector('.popup__type').textContent = types[cardSource.offer.type];
+    var cardAvatar = cardTemplate.querySelector('img');
+    var cardTitle = cardTemplate.querySelector('.popup__title');
+    var cardAddress = cardTemplate.querySelector('.popup__text--address');
+    var cardPrice = cardTemplate.querySelector('.popup__text--price');
+    var cardType = cardTemplate.querySelector('.popup__type');
+    if (cardSource.author.avatar) {
+      cardAvatar.src = cardSource.author.avatar;
+    } else {
+      cardAvatar.style.display = 'none';
+    }
+
+    if (cardSource.offer.price) {
+      cardPrice.src = cardSource.offer.price + '₽/ночь';
+    } else {
+      cardPrice.style.display = 'none';
+    }
+    checkFieldAvailability(cardSource.offer.title, cardTitle);
+    checkFieldAvailability(cardSource.offer.address, cardAddress);
+    checkFieldAvailability(types[cardSource.offer.type], cardType);
 
     var numberOfRooms = cardSource.offer.rooms;
     var numberOfGuests = cardSource.offer.guests;
@@ -56,22 +78,32 @@
 
     var features = cardSource.offer.features;
     var popupFeatures = cardTemplate.querySelector('.popup__features');
-    popupFeatures.replaceWith(renderFeatutes(features));
+    if (features.length > 0 && features) {
+      popupFeatures.replaceWith(renderFeatutes(features));
+    } else {
+      popupFeatures.style.display = 'none';
+    }
+
 
     cardTemplate.querySelector('.popup__description').textContent = cardSource.offer.description;
     var photos = cardSource.offer.photos;
     var popupPhotos = cardTemplate.querySelector('.popup__photos');
     var popupPhoto = popupPhotos.querySelector('.popup__photo');
-    popupPhoto.src = photos[0];
-    if (photos.length > 1) {
-      var images = document.createDocumentFragment();
-      for (var i = 1; i < photos.length; i++) {
-        var image = popupPhoto.cloneNode(true);
-        image.src = photos[i];
-        images.appendChild(image);
+    if (photos && photos.length > 0) {
+      popupPhoto.src = photos[0];
+      if (photos.length > 1) {
+        var images = document.createDocumentFragment();
+        for (var i = 1; i < photos.length; i++) {
+          var image = popupPhoto.cloneNode(true);
+          image.src = photos[i];
+          images.appendChild(image);
+        }
+        popupPhotos.appendChild(images);
       }
-      popupPhotos.appendChild(images);
+    } else {
+      popupPhotos.style.display = 'none';
     }
+
     return cardTemplate;
   };
 

@@ -55,6 +55,11 @@
     popup.remove();
   };
 
+  // переключает поле из активного в неактивное состояние и наоборот
+  var setElementAvailability = function (field, isDisabled) {
+    field.disabled = isDisabled;
+  };
+
   window.data = {
     isFirstMove: isFirstMove,
     main: main,
@@ -71,7 +76,8 @@
     getRandom: getRandom,
     closePopup: closePopup,
     clearMap: clearMap,
-    deletePopup: deletePopup
+    deletePopup: deletePopup,
+    setElementAvailability: setElementAvailability
   };
 
 })();

@@ -32,6 +32,7 @@
       }
     }
     pins.appendChild(fragment);
+    window.filter.setFilterAvailability(false);
   };
 
   var deactivatePin = function () {

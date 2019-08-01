@@ -19,20 +19,14 @@
   var avatarImage = document.querySelector('.ad-form-header__preview img');
   var photosContainer = document.querySelector('.ad-form__photo');
 
-
-  // переключает поле из активного в неактивное состояние и наоборот
-  var setElementAvailability = function (field, isDisabled) {
-    field.disabled = isDisabled;
-  };
-
   var formInputElement = form.querySelector('.ad-form-header__input');
   var formElements = form.querySelectorAll('.ad-form__element');
 
   //  переключает все поля формы на странице из активного в неактивное состояние и наоборот
   var setFieldsAvailability = function (isDisabled) {
-    setElementAvailability(formInputElement, isDisabled);
+    window.data.setElementAvailability(formInputElement, isDisabled);
     for (var i = 0; i < formElements.length; i++) {
-      setElementAvailability(formElements[i], isDisabled);
+      window.data.setElementAvailability(formElements[i], isDisabled);
     }
   };
 
