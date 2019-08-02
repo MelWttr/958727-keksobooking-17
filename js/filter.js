@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var PriceValues = {
+  var PriceValue = {
     LOW: 10000,
     HIGH: 50000
   };
@@ -10,7 +10,7 @@
 
   var requiredFeatures = [];
 
-  var filtersForm = document.querySelector('.map__filters');
+  var filtersForm = window.data.map.querySelector('.map__filters');
   var accomodationType = filtersForm.querySelector('#housing-type');
   var accomodationPrice = filtersForm.querySelector('#housing-price');
   var accomodationRoomsQuantity = filtersForm.querySelector('#housing-rooms');
@@ -33,11 +33,11 @@
   var filterByPrice = function (element) {
     switch (accomodationPrice.value) {
       case 'low':
-        return element['offer']['price'] < PriceValues.LOW;
+        return element['offer']['price'] < PriceValue.LOW;
       case 'middle':
-        return element['offer']['price'] >= PriceValues.LOW && element['offer']['price'] <= PriceValues.HIGH;
+        return element['offer']['price'] >= PriceValue.LOW && element['offer']['price'] <= PriceValue.HIGH;
       case 'high':
-        return element['offer']['price'] > PriceValues.HIGH;
+        return element['offer']['price'] > PriceValue.HIGH;
       default:
         return false;
     }
@@ -56,7 +56,7 @@
     if (!isNaN(elementCurrentValue)) {
       elementCurrentValue = +elementCurrentValue;
     }
-    return elementCurrentValue === 'any' ? true : requiredElementValue === elementCurrentValue;
+    return elementCurrentValue === 'any' || requiredElementValue === elementCurrentValue;
   };
 
   var filterElements = function (element) {
@@ -64,28 +64,28 @@
       && filterValues(element['offer']['rooms'], accomodationRoomsQuantity.value)
       && filterValues(element['offer']['guests'], accomodationGuestsQuantity.value)
       && filterByFeatures(element, requiredFeatures)
-      && ((accomodationPrice.value === 'any') ? true : filterByPrice(element));
+      && accomodationPrice.value === 'any' || filterByPrice(element);
   };
 
   var filterChangeHandler = function () {
-    var pinsData = [];
+    var pinData = [];
     var count = (window.responseObject.length < window.pins.PIN_LIMIT) ? window.responseObject.length : window.pins.PIN_LIMIT;
     for (var i = 0; i < window.responseObject.length; i++) {
-      if (pinsData.length === count) {
+      if (pinData.length === count) {
         break;
       } else if (filterElements(window.responseObject[i])) {
-        pinsData.push(window.responseObject[i]);
+        pinData.push(window.responseObject[i]);
       }
     }
-    var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    var card = document.querySelector('.map__card');
+    var mapPins = window.data.map.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var card = window.data.map.querySelector('.map__card');
     mapPins.forEach(function (element) {
       element.remove();
     });
     if (card) {
       card.remove();
     }
-    window.debounceTimeout(window.pins.createPins, DELAY_TIME, pinsData);
+    window.debounceTimeout(window.pins.createPins, DELAY_TIME, pinData);
   };
 
   accomodationOffers.forEach(function (accomodationOffer) {

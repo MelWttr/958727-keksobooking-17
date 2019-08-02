@@ -2,8 +2,9 @@
 (function () {
   // хранит минимальные стоимости за ночь для разных типов жилья
   var AVATAR_DEFAULT_IMAGE = 'img/muffin-grey.svg';
+  var INVALID_FIELD_BORDER = '2px solid red';
 
-  var minPrices = {
+  var offerTypeToMinPrice = {
     'bungalo': '0',
     'flat': '1000',
     'house': '5000',
@@ -32,53 +33,72 @@
 
   setFieldsAvailability(true); // выключает все поля в форме
 
+  var inputChangeHandler = function (evt) {
+    if (evt.target.validity.valid === false) {
+      evt.target.style.border = INVALID_FIELD_BORDER;
+    } else {
+      evt.target.style.border = 'none';
+    }
+  };
+
+  title.addEventListener('input', inputChangeHandler);
+
   // возвращает строку с координатами x и y для записи в поле с адресом
-  var makeAddressValue = function (x, y) {
+  var getAddressValue = function (x, y) {
     return x + ',' + y;
   };
 
   // заполняет поле с адресом координатами главного пина
-  address.value = makeAddressValue(window.data.getX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getY(window.data.mainPin, window.data.mainPin.offsetHeight / 2));
+  address.value = getAddressValue(window.data.getElementCoordinateX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getElementCoordinateY(window.data.mainPin, window.data.mainPin.offsetHeight / 2));
 
   // устанавливаем первоначальные значения полей тип и цена за ночь
-  price.min = minPrices[type.value];
-  price.placeholder = minPrices[type.value];
+  price.min = offerTypeToMinPrice[type.value];
+  price.placeholder = offerTypeToMinPrice[type.value];
 
   // синхронизируем поля тип и цена за ночь
-  type.onchange = function () {
-    price.min = minPrices[this.value];
-    price.placeholder = minPrices[this.value];
-  };
+  type.addEventListener('change', function () {
+    price.min = offerTypeToMinPrice[type.value];
+    price.placeholder = offerTypeToMinPrice[type.value];
+    if (price.validity.valid === false) {
+      price.style.border = INVALID_FIELD_BORDER;
+    } else {
+      price.style.border = 'none';
+    }
+  });
+
+  price.addEventListener('input', inputChangeHandler);
 
   // устанавливаем первоначальные значения полей дат заезда и выезда
   form.timein.value = form.timeout.value;
 
   // синхронизируем дату заезда и выезда
-  form.onchange = function (evt) {
+  form.addEventListener('change', function (evt) {
     if (evt.target.name === 'timein') {
-      this.timeout.value = evt.target.value;
+      form.timeout.value = evt.target.value;
     }
     if (evt.target.name === 'timeout') {
-      this.timein.value = evt.target.value;
+      form.timein.value = evt.target.value;
     }
-  };
+  });
 
   var roomQuantity = form.querySelector('#room_number');
   var guestQuantity = form.querySelector('#capacity');
 
   // проверяет правильность заполнения полей количества комнат и гостей
-  var quantityValidation = function (roomQuantityValue, guestQuantityValue) {
+  var quantityValidation = function (roomQuantityValue, guestQuantityValue, element) {
     if ((roomQuantityValue === 100 && guestQuantityValue > 0) || (roomQuantityValue < 100 && guestQuantityValue === 0) || (roomQuantityValue < guestQuantityValue)) {
+      element.style.border = '2px solid red';
       return 'недопустимое кол-во';
     }
+    element.style.border = 'none';
     return '';
   };
 
   var roomChangeHandler = function (evt) {
-    roomQuantity.setCustomValidity(quantityValidation(parseInt(evt.target.value, 10), parseInt(guestQuantity.value, 10)));
+    roomQuantity.setCustomValidity(quantityValidation(parseInt(evt.target.value, 10), parseInt(guestQuantity.value, 10), roomQuantity));
   };
   var capacityChangeHandler = function (evt) {
-    roomQuantity.setCustomValidity(quantityValidation(parseInt(roomQuantity.value, 10), parseInt(evt.target.value, 10)));
+    roomQuantity.setCustomValidity(quantityValidation(parseInt(roomQuantity.value, 10), parseInt(evt.target.value, 10), roomQuantity));
   };
 
   roomQuantity.addEventListener('change', roomChangeHandler);
@@ -86,9 +106,9 @@
 
   var clearForm = function () {
     title.value = '';
-    address.value = makeAddressValue(window.data.getX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getY(window.data.mainPin, window.data.mainPin.offsetHeight / 2));
+    address.value = getAddressValue(window.data.getElementCoordinateX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getElementCoordinateY(window.data.mainPin, window.data.mainPin.offsetHeight / 2));
     type.value = 'flat';
-    price.value = minPrices[type.value];
+    price.value = offerTypeToMinPrice[type.value];
     form.timein.selectedIndex = 0;
     form.timeout.selectedIndex = 0;
     roomQuantity.value = 1;
@@ -109,19 +129,25 @@
     form.classList.add('ad-form--disabled');
   };
 
-  var uploadFormSuccessHandler = function () {
+  var returnPageToStartCondition = function () {
     window.data.clearMap();
     clearForm();
     window.data.isFirstMove = true;
-    var popupTemplate = document.querySelector('#success').content;
+    window.data.mainPin.addEventListener('click', window.mainPinClickHandler);
+  };
+
+  var popupTemplate = document.querySelector('#success').content;
+
+  var uploadFormSuccessHandler = function () {
+    returnPageToStartCondition();
     var successTemplate = popupTemplate.cloneNode(true);
     window.data.main.appendChild(successTemplate);
-    var success = document.querySelector('.success');
+    var success = window.data.main.querySelector('.success');
 
-    var onPopupEscPress = function (evt) {
+    var popupEscPressHandler = function (evt) {
       if (evt.keyCode === window.data.ESC) {
         window.data.deletePopup(success);
-        document.removeEventListener('keydown', onPopupEscPress);
+        document.removeEventListener('keydown', popupEscPressHandler);
       }
     };
 
@@ -129,7 +155,7 @@
       window.data.deletePopup(success);
     });
 
-    document.addEventListener('keydown', onPopupEscPress);
+    document.addEventListener('keydown', popupEscPressHandler);
   };
 
   var formSubmitHandler = function (evt) {
@@ -147,9 +173,7 @@
   var resetBtn = form.querySelector('.ad-form__reset');
   resetBtn.addEventListener('click', function (evt) {
     evt.preventDefault();
-    window.data.clearMap();
-    clearForm();
-    window.data.isFirstMove = true;
+    returnPageToStartCondition();
   });
 
   window.formValidation = {
@@ -157,7 +181,7 @@
     address: address,
     form: form,
     setFieldsAvailability: setFieldsAvailability,
-    makeAddressValue: makeAddressValue
+    getAddressValue: getAddressValue
   };
 })();
 

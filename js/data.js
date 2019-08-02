@@ -1,18 +1,17 @@
 'use strict';
 (function () {
-  var images = [];
-  var main = document.querySelector('main');
-  var map = document.querySelector('.map');
-  var mainPin = map.querySelector('.map__pin--main');
-  var isFirstMove = true;
-
-  var WINDOW_WIDTH = map.offsetWidth;
   var WINDOW_HEIGHT_MAX = 630;
   var WINDOW_HEIGHT_MIN = 130;
   var MAIN_PIN_DEFAULT_LEFT = 570;
   var MAIN_PIN_DEFAULT_TOP = 375;
   var ESC = 27;
 
+  var images = [];
+  var main = document.querySelector('main');
+  var map = document.querySelector('.map');
+  var mainPin = map.querySelector('.map__pin--main');
+  var isFirstMove = true;
+  var windowWidth = map.offsetWidth;
 
   // парсит в число из строки координату абсолютно спозиционированного элемента
   var extractCoord = function (str) {
@@ -20,17 +19,13 @@
   };
 
   // возвращает координату X элемента (пина)
-  var getX = function (element, width) {
-    return extractCoord(element.style.left) + width;
+  var getElementCoordinateX = function (element, width) {
+    return Math.floor(extractCoord(element.style.left) + width);
   };
 
   // возвращает координату Y элемента (пина)
-  var getY = function (element, height) {
-    return extractCoord(element.style.top) + height;
-  };
-
-  var getRandom = function (min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+  var getElementCoordinateY = function (element, height) {
+    return Math.floor(extractCoord(element.style.top) + height);
   };
 
   var closePopup = function (popup) {
@@ -67,13 +62,12 @@
     mainPin: mainPin,
     images: images,
     ESC: ESC,
-    WINDOW_WIDTH: WINDOW_WIDTH,
+    windowWidth: windowWidth,
     WINDOW_HEIGHT_MIN: WINDOW_HEIGHT_MIN,
     WINDOW_HEIGHT_MAX: WINDOW_HEIGHT_MAX,
-    getX: getX,
-    getY: getY,
+    getElementCoordinateX: getElementCoordinateX,
+    getElementCoordinateY: getElementCoordinateY,
     extractCoord: extractCoord,
-    getRandom: getRandom,
     closePopup: closePopup,
     clearMap: clearMap,
     deletePopup: deletePopup,

@@ -2,10 +2,10 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var avatarFileChooser = document.querySelector('#avatar');
-  var avatarImage = document.querySelector('.ad-form-header__preview img');
-  var flatPicturesChooser = document.querySelector('#images');
-  var photosContainer = document.querySelector('.ad-form__photo');
+  var avatarFileChooser = window.formValidation.form.querySelector('#avatar');
+  var avatarImage = window.formValidation.form.querySelector('.ad-form-header__preview img');
+  var flatPicturesChooser = window.formValidation.form.querySelector('#images');
+  var photosContainer = window.formValidation.form.querySelector('.ad-form__photo');
 
   var createReader = function (fileToRead) {
     var fileName = fileToRead.name.toLowerCase();

@@ -2,6 +2,15 @@
 (function () {
   var PSEUDO_HEIGHT = 22; // высота хвоста главного пина
 
+  window.mainPinClickHandler = function () {
+    if (window.data.isFirstMove) {
+      window.pins.enablePage();
+      window.data.isFirstMove = false;
+    }
+    window.data.mainPin.removeEventListener('click', window.mainPinClickHandler);
+  };
+  window.data.mainPin.addEventListener('click', window.mainPinClickHandler);
+
   // далее описана логика перемещения пина по карте
   window.data.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -11,11 +20,11 @@
       y: evt.clientY
     };
 
-    var onMouseMove = function (moveEvt) {
+    var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
-      var mainPinDefaultX = window.data.getX(window.data.mainPin, window.data.mainPin.offsetWidth / 2); // координата X главного пина
-      var mainPinDefaultY = window.data.getY(window.data.mainPin, window.data.mainPin.offsetHeight + PSEUDO_HEIGHT); // координата Y главного пина
-      window.formValidation.address.value = window.formValidation.makeAddressValue(mainPinDefaultX, mainPinDefaultY); // меняем значение в поле адреса на каждый мув
+      var mainPinDefaultX = window.data.getElementCoordinateX(window.data.mainPin, window.data.mainPin.offsetWidth / 2); // координата X главного пина
+      var mainPinDefaultY = window.data.getElementCoordinateY(window.data.mainPin, window.data.mainPin.offsetHeight + PSEUDO_HEIGHT); // координата Y главного пина
+      window.formValidation.address.value = window.formValidation.getAddressValue(mainPinDefaultX, mainPinDefaultY); // меняем значение в поле адреса на каждый мув
       if (window.data.isFirstMove) { // если первый мув, приводим страницу в активное состояние
         window.pins.enablePage();
         window.data.isFirstMove = false;
@@ -34,10 +43,10 @@
       var pinX = window.data.mainPin.offsetLeft - shift.x;
 
       // задаем границы перемещения пина по карте
-      var minBottomValue = window.data.WINDOW_HEIGHT_MIN - (window.data.mainPin.offsetHeight + PSEUDO_HEIGHT);
-      var maxTopValue = window.data.WINDOW_HEIGHT_MAX - (window.data.mainPin.offsetHeight + PSEUDO_HEIGHT);
+      var minBottomValue = window.data.WINDOW_HEIGHT_MIN - PSEUDO_HEIGHT;
+      var maxTopValue = window.data.WINDOW_HEIGHT_MAX;
       var minLeftValue = -(window.data.mainPin.offsetWidth / 2);
-      var maxRightValue = window.data.WINDOW_WIDTH - window.data.mainPin.offsetWidth / 2;
+      var maxRightValue = window.data.windowWidth - window.data.mainPin.offsetWidth / 2;
       if (pinY >= minBottomValue && pinY <= maxTopValue) {
         window.data.mainPin.style.top = (window.data.mainPin.offsetTop - shift.y) + 'px';
       }
@@ -46,14 +55,14 @@
       }
     };
 
-    var onMouseUp = function (upEvt) {
+    var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   });
 
 })();
