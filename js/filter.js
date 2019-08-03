@@ -64,19 +64,11 @@
       && filterValues(element['offer']['rooms'], accomodationRoomsQuantity.value)
       && filterValues(element['offer']['guests'], accomodationGuestsQuantity.value)
       && filterByFeatures(element, requiredFeatures)
-      && accomodationPrice.value === 'any' || filterByPrice(element);
+      && (accomodationPrice.value === 'any' || filterByPrice(element));
   };
 
   var filterChangeHandler = function () {
-    var pinData = [];
-    var count = (window.responseObject.length < window.pins.PIN_LIMIT) ? window.responseObject.length : window.pins.PIN_LIMIT;
-    for (var i = 0; i < window.responseObject.length; i++) {
-      if (pinData.length === count) {
-        break;
-      } else if (filterElements(window.responseObject[i])) {
-        pinData.push(window.responseObject[i]);
-      }
-    }
+    var pinData = window.responseObject.filter(filterElements).slice(0, window.pins.PIN_LIMIT);
     var mapPins = window.data.map.querySelectorAll('.map__pin:not(.map__pin--main)');
     var card = window.data.map.querySelector('.map__card');
     mapPins.forEach(function (element) {

@@ -108,7 +108,7 @@
     title.value = '';
     address.value = getAddressValue(window.data.getElementCoordinateX(window.data.mainPin, window.data.mainPin.offsetWidth / 2), window.data.getElementCoordinateY(window.data.mainPin, window.data.mainPin.offsetHeight / 2));
     type.value = 'flat';
-    price.value = offerTypeToMinPrice[type.value];
+    price.value = '';
     form.timein.selectedIndex = 0;
     form.timeout.selectedIndex = 0;
     roomQuantity.value = 1;
@@ -181,7 +181,8 @@
     address: address,
     form: form,
     setFieldsAvailability: setFieldsAvailability,
-    getAddressValue: getAddressValue
+    getAddressValue: getAddressValue,
+    formSubmitHandler: formSubmitHandler
   };
 })();
 

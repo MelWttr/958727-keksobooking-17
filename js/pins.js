@@ -54,12 +54,12 @@
     createPins(window.responseObject.slice(0, PIN_LIMIT));
   };
 
-  var errorTemplate = document.querySelector('#error').content;
+  var ErrorTemplate = document.querySelector('#error').content;
 
   var errorHandler = function (message) {
-    window.data.main.appendChild(errorTemplate);
+    var errorElement = ErrorTemplate.cloneNode(true);
+    window.data.main.appendChild(errorElement);
     var error = window.data.main.querySelector('.error');
-    var errorBtn = error.querySelector('.error__button');
     var errorMsg = error.querySelector('.error__message');
     errorMsg.textContent = message;
 
@@ -73,10 +73,6 @@
         document.removeEventListener('keydown', popupEscPressHandler);
       }
     };
-
-    errorBtn.addEventListener('click', function () {
-      deleteErrorPopup();
-    });
     error.addEventListener('click', function () {
       deleteErrorPopup();
     });

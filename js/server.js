@@ -32,7 +32,7 @@
           message = 'Страница не найдена';
           break;
         default:
-          message = xhr.status + ' ' + xhr.statusText;
+          message = 'Ошибка ' + xhr.status + ' ' + xhr.statusText;
       }
       if (message) {
         onError(message);
