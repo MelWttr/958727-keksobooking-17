@@ -95,10 +95,10 @@
   };
 
   var roomChangeHandler = function (evt) {
-    roomQuantity.setCustomValidity(quantityValidation(parseInt(evt.target.value, 10), parseInt(guestQuantity.value, 10), roomQuantity));
+    roomQuantity.setCustomValidity(quantityValidation(+evt.target.value, +guestQuantity.value, roomQuantity));
   };
   var capacityChangeHandler = function (evt) {
-    roomQuantity.setCustomValidity(quantityValidation(parseInt(roomQuantity.value, 10), parseInt(evt.target.value, 10), roomQuantity));
+    roomQuantity.setCustomValidity(quantityValidation(+roomQuantity.value, +evt.target.value, roomQuantity));
   };
 
   roomQuantity.addEventListener('change', roomChangeHandler);

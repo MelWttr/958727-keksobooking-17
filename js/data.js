@@ -15,7 +15,7 @@
 
   // парсит в число из строки координату абсолютно спозиционированного элемента
   var extractCoord = function (str) {
-    return parseInt(str.replace('px', ''), 10);
+    return +str.replace('px', '');
   };
 
   // возвращает координату X элемента (пина)
