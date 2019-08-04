@@ -1,2 +1,2 @@
 # Личный проект «Кексобукинг»
-* [Посмотреть сайт] (https://melwttr.github.io/Keksobooking/)
+* [Посмотреть сайт](https://melwttr.github.io/Keksobooking/)
