@@ -34,7 +34,7 @@
   setFieldsAvailability(true); // выключает все поля в форме
 
   var inputChangeHandler = function (evt) {
-    if (evt.target.validity.valid === false) {
+    if (!evt.target.validity.valid) {
       evt.target.style.border = INVALID_FIELD_BORDER;
     } else {
       evt.target.style.border = 'none';
@@ -134,6 +134,7 @@
     clearForm();
     window.data.isFirstMove = true;
     window.data.mainPin.addEventListener('click', window.mainPinClickHandler);
+    window.data.filtersForm.reset();
   };
 
   var popupTemplate = document.querySelector('#success').content;

@@ -79,7 +79,7 @@
     }
 
     if (cardSource.offer.price) {
-      cardPrice.src = cardSource.offer.price + '₽/ночь';
+      cardPrice.textContent = cardSource.offer.price + '₽/ночь';
     } else {
       cardPrice.style.display = 'none';
     }

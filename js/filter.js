@@ -10,12 +10,11 @@
 
   var requiredFeatures = [];
 
-  var filtersForm = window.data.map.querySelector('.map__filters');
-  var accomodationType = filtersForm.querySelector('#housing-type');
-  var accomodationPrice = filtersForm.querySelector('#housing-price');
-  var accomodationRoomsQuantity = filtersForm.querySelector('#housing-rooms');
-  var accomodationGuestsQuantity = filtersForm.querySelector('#housing-guests');
-  var accomodationFeatures = filtersForm.querySelectorAll('.map__checkbox');
+  var accomodationType = window.data.filtersForm.querySelector('#housing-type');
+  var accomodationPrice = window.data.filtersForm.querySelector('#housing-price');
+  var accomodationRoomsQuantity = window.data.filtersForm.querySelector('#housing-rooms');
+  var accomodationGuestsQuantity = window.data.filtersForm.querySelector('#housing-guests');
+  var accomodationFeatures = window.data.filtersForm.querySelectorAll('.map__checkbox');
   var accomodationOffers = [accomodationType, accomodationPrice, accomodationRoomsQuantity, accomodationGuestsQuantity];
 
   var setFilterAvailability = function (isDisabled) {

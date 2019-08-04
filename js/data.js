@@ -10,6 +10,7 @@
   var main = document.querySelector('main');
   var map = document.querySelector('.map');
   var mainPin = map.querySelector('.map__pin--main');
+  var filtersForm = map.querySelector('.map__filters');
   var isFirstMove = true;
   var windowWidth = map.offsetWidth;
 
@@ -60,6 +61,7 @@
     main: main,
     map: map,
     mainPin: mainPin,
+    filtersForm: filtersForm,
     images: images,
     ESC: ESC,
     windowWidth: windowWidth,

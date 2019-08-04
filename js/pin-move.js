@@ -2,9 +2,16 @@
 (function () {
   var PSEUDO_HEIGHT = 22; // высота хвоста главного пина
 
+  var fillAddressField = function () {
+    var mainPinDefaultX = window.data.getElementCoordinateX(window.data.mainPin, window.data.mainPin.offsetWidth / 2); // координата X главного пина
+    var mainPinDefaultY = window.data.getElementCoordinateY(window.data.mainPin, window.data.mainPin.offsetHeight + PSEUDO_HEIGHT); // координата Y главного пина
+    window.formValidation.address.value = window.formValidation.getAddressValue(mainPinDefaultX, mainPinDefaultY); // меняем значение в поле адреса на каждый мув
+  };
+
   window.mainPinClickHandler = function () {
     if (window.data.isFirstMove) {
       window.pins.enablePage();
+      fillAddressField();
       window.data.isFirstMove = false;
     }
     window.data.mainPin.removeEventListener('click', window.mainPinClickHandler);
@@ -22,9 +29,7 @@
 
     var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
-      var mainPinDefaultX = window.data.getElementCoordinateX(window.data.mainPin, window.data.mainPin.offsetWidth / 2); // координата X главного пина
-      var mainPinDefaultY = window.data.getElementCoordinateY(window.data.mainPin, window.data.mainPin.offsetHeight + PSEUDO_HEIGHT); // координата Y главного пина
-      window.formValidation.address.value = window.formValidation.getAddressValue(mainPinDefaultX, mainPinDefaultY); // меняем значение в поле адреса на каждый мув
+      fillAddressField();
       if (window.data.isFirstMove) { // если первый мув, приводим страницу в активное состояние
         window.pins.enablePage();
         window.data.isFirstMove = false;
