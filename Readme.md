@@ -1,2 +1,2 @@
-# Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
+# Личный проект «Кексобукинг»
 * [Посмотреть сайт] (https://melwttr.github.io/Keksobooking/)
